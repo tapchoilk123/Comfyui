@@ -2,7 +2,6 @@ name: Docker Image CI
 
 on:
   push:
-<<<<<<< HEAD
     branches: [ \"main\" ]
   pull_request:
     branches: [ \"main\" ]
@@ -17,17 +16,4 @@ jobs:
           docker login --username tapchoilk123 --password ${{ secrets.GH_PAT }} ghcr.io
           docker build . --tag ghcr.io/tapchoilk123/comfyui-fluxvideo-ghcr:latest
           docker push ghcr.io/tapchoilk123/comfyui-fluxvideo-ghcr:latest'"
-=======
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
-  build_and_publish: runs-on:ubunti-22.04
-    steps:
-      -uses: action/checkout@v3
-      -name: Build and push image
-        run: |
-          docker login --username tapchoilk123 --password ${{ sectets.GH_PAT}} ghcr.io
-          docker build . --tag ghcr.io/tapchoilk123/comfyui-fluxvideo-ghcr:latest
-          docker push  ghcr.io/tapchoilk123/comfyui-fluxvideo-ghcr:latest
->>>>>>> 1229c4f644b8ab23f97d541dba84617d8aed3d27
