@@ -1,0 +1,16 @@
+name: Docker Image CI For GHCR
+
+
+ON:
+  push
+
+jobs:
+  build_and_publish:
+    runs-on:ubunti-22.04
+    steps:
+      -uses: action/checkout@v3
+      -name: Build and push image
+        run: |
+          docker login --username tapchoilk123 --password ${{ sectets.GH_PAT}} ghcr.io
+          docker build . --tag ghcr.io/tapchoilk123/comfyui-fluxvideo-ghcr:latest
+          docker push  ghcr.io/tapchoilk123/comfyui-fluxvideo-ghcr:latest
