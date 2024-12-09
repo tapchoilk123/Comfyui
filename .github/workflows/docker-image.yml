@@ -6,7 +6,6 @@ on:
   pull_request:
     branches: [ "main" ]
 
-jobs:
   build_and_publish: runs-on:ubunti-22.04
     steps:
       -uses: action/checkout@v3
