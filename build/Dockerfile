@@ -7,6 +7,22 @@ LABEL org.opencontainers.image.source="https://github.com/tapchoilk123/Comfyui"
 LABEL org.opencontainers.image.description="ComfyUI FluxVideo backend and GUI"
 LABEL maintainer="PhuongNguyen <phuonglk0975@gmail.com>"
 
+
+# Cài Docker CLI trong Dockerfile
+RUN apt-get update && apt-get install -y docker.io
+
+ARG GITHUB_USERNAME
+ARG GITHUB_TOKEN
+
+# Đăng nhập vào ghcr.io
+RUN echo "${GITHUB_TOKEN}" | docker login ghcr.io -u ${GITHUB_USERNAME} --password-stdin
+
+# Cài đặt dependencies
+RUN apt-get update && apt-get install -y curl && \
+    curl -fsSL https://github.com/settings/tokens --output /dev/null
+
+
+
 ENV COMFYUI_VENV=$VENV_DIR/comfyui
 ENV COMFYUI_VENV_PYTHON=$COMFYUI_VENV/bin/python
 ENV COMFYUI_VENV_PIP=$COMFYUI_VENV/bin/pip
