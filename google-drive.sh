@@ -31,9 +31,13 @@ PIP_PACKAGES=(
 
 # Folder ID chứa models
 GOOGLE_DRIVE_FOLDER_ID="1LhOUBP9pTouk-SiIk0t5A6Je9B8O0ckR"
+# Folder ID chứa custom nodes
+GOOGLE_DRIVE_FOLDER_ID_CUSTOM_NODES="1jNtiaRBm9pqk2BdD1pRqagQxio88p3pv"
 
 # Base directory cho models
 BASE_DIR="./models"
+# Base directory cho custom nodes
+CUSTOM_NODES_DIR="./custom_nodes"
 
 function install_dependencies() {
     # Kiểm tra OS
@@ -94,15 +98,54 @@ EOL
     fi
 }
 
+function download_custom_nodes() {
+    local folder_id="$GOOGLE_DRIVE_FOLDER_ID_CUSTOM_NODES"
+    local base_dir="$CUSTOM_NODES_DIR"
+    
+    echo "Downloading custom nodes from Google Drive folder..."
+    
+    # Tạo script Python tạm thời để download folder
+    cat > download_custom_nodes.py << EOL
+import gdown
+import os
+
+folder_id = "$folder_id"
+output_dir = "$base_dir"
+
+# Đảm bảo thư mục đích tồn tại
+os.makedirs(output_dir, exist_ok=True)
+
+# Download toàn bộ folder
+url = f"https://drive.google.com/drive/folders/{folder_id}"
+gdown.download_folder(url=url, output=output_dir, quiet=False)
+EOL
+
+    # Chạy script Python
+    python3 download_custom_nodes.py
+    
+    # Xóa script tạm
+    rm download_custom_nodes.py
+    
+    if [ $? -eq 0 ]; then
+        echo "Successfully downloaded custom nodes to $base_dir"
+    else
+        echo "Failed to download custom nodes from folder"
+    fi
+}
+
 function main() {
-    # Tạo thư mục models nếu chưa tồn tại
+    # Tạo thư mục models và custom_nodes nếu chưa tồn tại
     mkdir -p "$BASE_DIR"
+    mkdir -p "$CUSTOM_NODES_DIR"
     
     # Cài đặt dependencies
     install_dependencies
     
-    # Download folder
+    # Download folder models
     download_folder
+    
+    # Download folder custom nodes
+    download_custom_nodes
 }
 
 # Chạy script
